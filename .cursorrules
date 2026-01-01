@@ -1,0 +1,241 @@
+# Reglas de Desarrollo - Control Gastos
+
+## Información del Proyecto
+- **Tipo**: Aplicación web con frontend y backend separados
+- **Frontend**: Angular (estructura modular)
+- **Backend**: .NET 9 (C#)
+- **Base de Datos**: Relacional (SQLite para desarrollo, PostgreSQL para producción)
+- **Propósito**: Proyecto pequeño, doméstico, para hosting económico
+
+---
+
+## Estilo de Código
+
+### Principios Generales
+- **Clean Code**: Seguir principios de código limpio en todo momento
+- **Documentación**: Todos los métodos deben tener documentación en código
+- **Legibilidad**: El código debe ser autoexplicativo, con nombres descriptivos
+
+### Convenciones de Nomenclatura
+
+#### C# (Backend)
+- **Clases y Métodos**: PascalCase
+  - Ejemplo: `public class UserService { public void CreateUser() }`
+- **Variables y Parámetros**: camelCase
+  - Ejemplo: `var userName = "test"; public void ProcessOrder(int orderId)`
+- **Constantes**: PascalCase
+  - Ejemplo: `public const int MaxRetries = 3;`
+- **Campos privados**: camelCase con prefijo `_` (opcional, pero consistente)
+  - Ejemplo: `private readonly ILogger _logger;`
+
+#### TypeScript/Angular (Frontend)
+- **Clases y Componentes**: PascalCase
+  - Ejemplo: `export class UserService`, `export class UserComponent`
+- **Variables y Funciones**: camelCase
+  - Ejemplo: `const userName = 'test'; function processOrder() {}`
+- **Interfaces**: PascalCase, prefijo `I` opcional
+  - Ejemplo: `export interface User` o `export interface IUser`
+- **Constantes**: UPPER_SNAKE_CASE o camelCase según contexto
+  - Ejemplo: `const MAX_RETRIES = 3;` o `const apiUrl = '...'`
+
+---
+
+## Arquitectura
+
+### Backend (.NET 9)
+- **Patrón**: Domain-Driven Design (DDD)
+- **Separación en Proyectos**:
+  - **Web**: Controllers, API endpoints, configuración
+  - **Domain**: Entidades, value objects, interfaces de repositorios, lógica de negocio
+  - **Infrastructure**: Implementación de repositorios, acceso a datos, servicios externos
+
+### Frontend (Angular)
+- **Estructura Modular**: Organizar por módulos de funcionalidad
+- **Componentes**: Componentes reutilizables y específicos
+- **Servicios**: Servicios para lógica de negocio y comunicación con API
+- **Models/Interfaces**: Tipos TypeScript para datos
+
+---
+
+## Backend - Reglas Específicas
+
+### Documentación
+- **Comentarios XML**: Solo en métodos (no en propiedades a menos que sea necesario)
+- **Formato**: Usar comentarios XML estándar de C#
+  ```csharp
+  /// <summary>
+  /// Crea un nuevo usuario en el sistema
+  /// </summary>
+  /// <param name="userDto">Datos del usuario a crear</param>
+  /// <returns>El usuario creado</returns>
+  /// <exception cref="BusinessException">Cuando el email ya existe</exception>
+  public async Task<User> CreateUserAsync(UserDto userDto)
+  ```
+
+### Validación
+- **FluentValidation**: Usar FluentValidation para todas las validaciones de entrada
+- **Validators**: Crear validators por DTO/Request
+- **Validación en múltiples capas**: Validar en API y Domain cuando sea necesario
+
+### Manejo de Excepciones
+- **Centralizado**: Implementar middleware de manejo de excepciones global
+- **Excepciones Personalizadas**:
+  - Crear excepciones específicas para errores de negocio (BusinessException, ValidationException)
+  - Crear excepciones para errores de infraestructura (InfrastructureException, DataAccessException)
+- **Mapeo**: Mapear todas las excepciones a respuestas HTTP apropiadas
+- **Logging**: Registrar todas las excepciones con contexto suficiente
+
+### Estructura de Respuestas API
+- **Consistencia**: Todas las respuestas deben seguir un formato estándar
+- **Códigos HTTP**: Usar códigos HTTP apropiados (200, 201, 400, 404, 500, etc.)
+- **Mensajes de Error**: Proporcionar mensajes claros y útiles
+
+### Swagger/OpenAPI
+- **Documentación Completa**: Todos los endpoints deben estar documentados en Swagger
+- **Ejemplos**: Incluir ejemplos de request/response cuando sea útil
+- **Versionado**: Considerar versionado de API si es necesario
+
+---
+
+## Frontend - Reglas Específicas
+
+### Testing
+- **Framework**: Jasmine + Karma (estándar de Angular)
+- **Cobertura**: Mantener cobertura mínima del 80%
+- **Unit Tests**: Escribir tests para servicios y componentes críticos
+
+### Estructura de Módulos
+- **Feature Modules**: Organizar por funcionalidad
+- **Shared Module**: Componentes, servicios y directivas compartidas
+- **Core Module**: Servicios singleton (autenticación, logging, etc.)
+
+### Servicios HTTP
+- **Interceptors**: Usar interceptors para manejo de errores y autenticación
+- **Tipado**: Usar interfaces TypeScript para todas las respuestas de API
+- **Manejo de Errores**: Manejar errores de forma consistente en toda la aplicación
+
+---
+
+## Testing
+
+### Backend (C#)
+- **Framework**: xUnit
+- **Cobertura**: Mantener cobertura mínima del 80%
+- **Unit Tests**: 
+  - Testear lógica de negocio en Domain
+  - Testear servicios y validadores
+  - Mockear dependencias externas
+- **Naming**: `MethodName_Scenario_ExpectedResult`
+  - Ejemplo: `CreateUser_WhenEmailExists_ThrowsBusinessException`
+
+### Frontend (Angular)
+- **Framework**: Jasmine + Karma
+- **Cobertura**: Mantener cobertura mínima del 80%
+- **Unit Tests**: 
+  - Testear componentes y servicios
+  - Mockear servicios HTTP
+  - Testear lógica de negocio en servicios
+
+---
+
+## Configuración
+
+### Backend
+- **appsettings.json**: Usar archivos de configuración por ambiente
+  - `appsettings.json` (base)
+  - `appsettings.Development.json`
+  - `appsettings.Production.json`
+- **Secrets**: No committear información sensible
+- **Connection Strings**: Configurar en appsettings por ambiente
+
+### Frontend
+- **Environments**: Usar archivos de environment de Angular
+  - `environment.ts` (desarrollo)
+  - `environment.prod.ts` (producción)
+- **API URLs**: Configurar URLs de API en environments
+
+---
+
+## Git y Control de Versiones
+
+### Commits
+- **Mensajes Descriptivos**: Escribir mensajes claros que expliquen el cambio
+- **Formato**: `tipo: descripción breve`
+  - Ejemplos: `feat: agregar endpoint de usuarios`, `fix: corregir validación de email`
+
+### Branching
+- **Main/Master**: Código estable y desplegado
+- **Develop**: Código en desarrollo
+- **Feature branches**: Para nuevas funcionalidades
+- **Hotfix branches**: Para correcciones urgentes
+
+---
+
+## Documentación
+
+### README
+- **Setup**: Instrucciones claras de instalación y configuración
+- **Run**: Cómo ejecutar el proyecto en desarrollo
+- **Estructura**: Explicar la estructura del proyecto
+- **Dependencias**: Listar dependencias principales
+
+### Código
+- **Comentarios XML**: En todos los métodos de C#
+- **Comentarios Inline**: Solo cuando el código no es autoexplicativo
+- **Swagger**: Mantener documentación de API actualizada
+
+---
+
+## Base de Datos
+
+### Desarrollo
+- **SQLite**: Para desarrollo local (simple y sin configuración)
+
+### Producción
+- **PostgreSQL**: Para producción (gratuito en varios hostings)
+- **Migrations**: Usar Entity Framework Migrations
+- **Versionado**: Versionar todas las migraciones
+
+---
+
+## Mejores Prácticas Generales
+
+### Código
+- **DRY**: Don't Repeat Yourself - evitar duplicación
+- **SOLID**: Aplicar principios SOLID
+- **Single Responsibility**: Cada clase/método debe tener una responsabilidad única
+- **Dependency Injection**: Usar DI en todo el proyecto
+- **Async/Await**: Usar async/await para operaciones I/O
+
+### Seguridad
+- **Validación**: Validar todas las entradas
+- **Autenticación**: Implementar autenticación cuando sea necesario
+- **Autorización**: Verificar permisos en cada endpoint
+- **Secrets**: Nunca committear secrets o información sensible
+
+### Performance
+- **Queries**: Optimizar queries a base de datos
+- **Caching**: Considerar caching cuando sea apropiado
+- **Lazy Loading**: Usar lazy loading en Angular cuando sea necesario
+
+---
+
+## Checklist para Nuevas Features
+
+- [ ] Código sigue convenciones de nomenclatura
+- [ ] Métodos documentados con comentarios XML (C#)
+- [ ] Validaciones implementadas (FluentValidation)
+- [ ] Excepciones personalizadas creadas y manejadas
+- [ ] Unit tests escritos (cobertura 80%+)
+- [ ] Swagger documentado (si es endpoint)
+- [ ] Manejo de errores implementado
+- [ ] Código revisado y limpio (Clean Code)
+
+---
+
+## Notas Adicionales
+
+- **Hosting**: Deployment se definirá según hosting elegido
+- **Escalabilidad**: Proyecto pequeño, pero mantener código escalable
+- **Mantenibilidad**: Priorizar código mantenible sobre optimizaciones prematuras
+
