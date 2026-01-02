@@ -1,0 +1,120 @@
+.totalizadores {
+  margin-bottom: 2rem;
+}
+
+.totalizadores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Card */
+.totalizador-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.totalizador-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Header */
+.totalizador-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.totalizador-icon {
+  font-size: 1.5rem;
+}
+
+.totalizador-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+/* Body */
+.totalizador-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.totalizador-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Valores específicos */
+.value-esperado {
+  color: #4ECDC4;
+}
+
+.value-recibido {
+  color: #51CF66;
+}
+
+.value-adeudado {
+  color: #FF6B6B;
+}
+
+.value-pagado {
+  color: #FFA500;
+}
+
+.value-positive {
+  color: #51CF66;
+}
+
+.value-negative {
+  color: #FF6B6B;
+}
+
+/* Card específicos */
+.ingreso-card {
+  border-top: 4px solid #4ECDC4;
+}
+
+.gasto-card {
+  border-top: 4px solid #FF6B6B;
+}
+
+.balance-card {
+  border-top: 4px solid #FFA500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .totalizadores-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .totalizadores-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

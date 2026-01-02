@@ -1,0 +1,262 @@
+.gasto-item {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  border-left: 4px solid #ddd;
+  transition: all 0.2s;
+}
+
+.gasto-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateX(2px);
+}
+
+/* Estados */
+.estado-pendiente {
+  border-left-color: #FF6B6B;
+}
+
+.estado-confirmado {
+  border-left-color: #FFA500;
+}
+
+.estado-pagado-parcial {
+  border-left-color: #4ECDC4;
+}
+
+.estado-pagado-completo {
+  border-left-color: #51CF66;
+}
+
+/* Content layout */
+.gasto-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Estado indicator */
+.gasto-estado-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.estado-pendiente .gasto-estado-indicator {
+  background-color: #FF6B6B;
+}
+
+.estado-confirmado .gasto-estado-indicator {
+  background-color: #FFA500;
+}
+
+.estado-pagado-parcial .gasto-estado-indicator {
+  background-color: #4ECDC4;
+}
+
+.estado-pagado-completo .gasto-estado-indicator {
+  background-color: #51CF66;
+}
+
+/* Info */
+.gasto-info {
+  min-width: 0;
+}
+
+.gasto-concepto {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+/* Estado badge */
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.estado-badge-pendiente {
+  background-color: #FFE0E0;
+  color: #D32F2F;
+}
+
+.estado-badge-confirmado {
+  background-color: #FFF3E0;
+  color: #F57C00;
+}
+
+.estado-badge-pagado {
+  background-color: #E8F5E9;
+  color: #388E3C;
+}
+
+/* Categorías */
+.gasto-categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.categoria-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+}
+
+/* Montos */
+.gasto-montos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 140px;
+  margin-left: auto;
+}
+
+.monto-adeudado, .monto-pagado {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.monto-label {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.monto-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.monto-pagado-completo {
+  color: #51CF66;
+}
+
+/* Actions */
+.gasto-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  padding: 0.75rem;
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1.125rem;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  background-color: #f0f0f0;
+}
+
+.btn-danger:hover {
+  background-color: #ffe0e0;
+}
+
+/* Más grande en móvil para mejor touch */
+@media (max-width: 768px) {
+  .btn-icon {
+    padding: 0.875rem;
+    min-width: 48px;
+    min-height: 48px;
+    font-size: 1.25rem;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gasto-content {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .gasto-estado-indicator {
+    align-self: flex-start;
+    margin-top: 0.25rem;
+  }
+
+  .gasto-info {
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .gasto-concepto {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .gasto-categorias {
+    gap: 0.25rem;
+  }
+
+  .categoria-badge {
+    font-size: 0.625rem;
+    padding: 0.125rem 0.375rem;
+  }
+
+  .gasto-montos {
+    min-width: auto;
+    font-size: 0.75rem;
+  }
+
+  .monto-label {
+    font-size: 0.75rem;
+  }
+
+  .monto-value {
+    font-size: 0.75rem;
+  }
+
+  .gasto-actions {
+    flex-basis: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .action-buttons {
+    margin-left: 0;
+  }
+
+  .estado-badge {
+    font-size: 0.625rem;
+    padding: 0.125rem 0.375rem;
+  }
+
+  .btn-icon {
+    padding: 0.5rem;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 1rem;
+  }
+}
+

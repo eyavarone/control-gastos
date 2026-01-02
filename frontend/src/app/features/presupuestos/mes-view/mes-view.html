@@ -1,0 +1,121 @@
+<div class="mes-view-container">
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">
+    <p>Cargando presupuesto...</p>
+  </div>
+
+  <!-- Contenido principal -->
+  <div *ngIf="!loading && mes">
+    <!-- Header -->
+    <header class="mes-header">
+      <div class="mes-header-content">
+        <button class="btn-back" routerLink="/hogares">
+          ← Volver a Hogares
+        </button>
+        <h1>{{ getNombreMes() }}</h1>
+        <div class="mes-actions">
+          <button class="btn-secondary">Editar Mes</button>
+          <button class="btn-primary">+ Nuevo Gasto</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Totalizadores -->
+    <app-totalizadores 
+      *ngIf="mes.totalizadores"
+      [totalizadores]="mes.totalizadores">
+    </app-totalizadores>
+
+    <div class="mes-content">
+      <!-- Ingresos -->
+      <section class="section">
+        <div class="section-header">
+          <h2>💵 Ingresos</h2>
+          <button class="btn-sm btn-primary">+ Agregar Ingreso</button>
+        </div>
+
+        <!-- Ingresos Fijos -->
+        <div *ngIf="ingresosFijos.length > 0" class="subsection">
+          <h3>Ingresos Fijos</h3>
+          <div class="items-list">
+            <app-ingreso-item 
+              *ngFor="let ingreso of ingresosFijos"
+              [ingreso]="ingreso"
+              (confirmar)="onConfirmarIngreso($event)"
+              (registrarRecepcion)="onRegistrarRecepcionIngreso($event)"
+              (editar)="onEditarIngreso($event)"
+              (eliminar)="onEliminarIngreso($event)">
+            </app-ingreso-item>
+          </div>
+        </div>
+
+        <!-- Ingresos Variables -->
+        <div *ngIf="ingresosVariables.length > 0" class="subsection">
+          <h3>Ingresos Variables</h3>
+          <div class="items-list">
+            <app-ingreso-item 
+              *ngFor="let ingreso of ingresosVariables"
+              [ingreso]="ingreso"
+              (confirmar)="onConfirmarIngreso($event)"
+              (registrarRecepcion)="onRegistrarRecepcionIngreso($event)"
+              (editar)="onEditarIngreso($event)"
+              (eliminar)="onEliminarIngreso($event)">
+            </app-ingreso-item>
+          </div>
+        </div>
+
+        <div *ngIf="mes.ingresos.length === 0" class="empty-state">
+          <p>No hay ingresos registrados en este mes.</p>
+        </div>
+      </section>
+
+      <!-- Gastos -->
+      <section class="section">
+        <div class="section-header">
+          <h2>💸 Gastos</h2>
+          <button class="btn-sm btn-primary">+ Agregar Gasto</button>
+        </div>
+
+        <!-- Gastos Fijos -->
+        <div *ngIf="gastosFijos.length > 0" class="subsection">
+          <h3>Gastos Fijos</h3>
+          <div class="items-list">
+            <app-gasto-item 
+              *ngFor="let gasto of gastosFijos"
+              [gasto]="gasto"
+              (confirmar)="onConfirmarGasto($event)"
+              (registrarPago)="onRegistrarPagoGasto($event)"
+              (editar)="onEditarGasto($event)"
+              (eliminar)="onEliminarGasto($event)">
+            </app-gasto-item>
+          </div>
+        </div>
+
+        <!-- Gastos Variables -->
+        <div *ngIf="gastosVariables.length > 0" class="subsection">
+          <h3>Gastos Variables</h3>
+          <div class="items-list">
+            <app-gasto-item 
+              *ngFor="let gasto of gastosVariables"
+              [gasto]="gasto"
+              (confirmar)="onConfirmarGasto($event)"
+              (registrarPago)="onRegistrarPagoGasto($event)"
+              (editar)="onEditarGasto($event)"
+              (eliminar)="onEliminarGasto($event)">
+            </app-gasto-item>
+          </div>
+        </div>
+
+        <div *ngIf="mes.gastos.length === 0" class="empty-state">
+          <p>No hay gastos registrados en este mes.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Estado cuando no hay datos -->
+  <div *ngIf="!loading && !mes" class="error-state">
+    <p>No se pudo cargar el presupuesto del mes.</p>
+    <button class="btn-primary" routerLink="/hogares">Volver a Hogares</button>
+  </div>
+</div>

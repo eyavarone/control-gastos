@@ -1,0 +1,83 @@
+<div class="ingreso-item" [ngClass]="getEstadoClass()">
+  <div class="ingreso-content">
+    <!-- Información principal -->
+    <div class="ingreso-info">
+      <h4 class="ingreso-concepto">{{ ingreso.concepto }}</h4>
+      <span class="ingreso-tipo-badge">{{ ingreso.tipo }}</span>
+    </div>
+
+    <!-- Montos -->
+    <div class="ingreso-montos">
+      <div class="monto-esperado">
+        <span class="monto-label">Esperado:</span>
+        <span class="monto-value">{{ formatCurrency(ingreso.montoEsperado) }}</span>
+      </div>
+      <div class="monto-recibido">
+        <span class="monto-label">Recibido:</span>
+        <span class="monto-value" [class.monto-recibido-completo]="isCompletamenteRecibido()">
+          {{ formatCurrency(ingreso.montoRecibido) }}</span>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="ingreso-actions">
+      <span class="estado-badge" [ngClass]="'estado-badge-' + getEstado().toLowerCase()">
+        {{ getEstado() }}
+      </span>
+      <div class="action-buttons">
+        <button class="btn-icon" title="Confirmar monto" *ngIf="!ingreso.estaConfirmado" (click)="onConfirmarClick()">
+          ✓
+        </button>
+        <button class="btn-icon" title="Registrar recepción" (click)="onRecibirClick()">
+          💰
+        </button>
+        <button class="btn-icon" title="Editar" (click)="onEditarClick()">
+          ✏️
+        </button>
+        <button class="btn-icon btn-danger" title="Eliminar" (click)="onEliminarClick()">
+          🗑️
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmar monto -->
+<app-monto-modal
+  [isVisible]="showConfirmMontoModal"
+  [title]="'Confirmar Monto del Ingreso'"
+  [montoLabel]="'Monto Esperado'"
+  [montoActual]="ingreso.montoEsperado"
+  [montoEsperado]="ingreso.montoEsperado"
+  [concepto]="ingreso.concepto"
+  [confirmText]="'Confirmar Monto'"
+  [isConfirmMode]="true"
+  (confirmed)="onConfirmarMonto($event)"
+  (cancelled)="onCancelarModal()"
+></app-monto-modal>
+
+<!-- Modal registrar recepción -->
+<app-monto-modal
+  [isVisible]="showRecepcionModal"
+  [title]="'Registrar Recepción'"
+  [montoLabel]="'Monto Recibido'"
+  [montoActual]="ingreso.montoRecibido"
+  [montoEsperado]="ingreso.montoEsperado"
+  [concepto]="ingreso.concepto"
+  [confirmText]="'Registrar Recepción'"
+  [isConfirmMode]="false"
+  (confirmed)="onRegistrarRecepcion($event)"
+  (cancelled)="onCancelarModal()"
+></app-monto-modal>
+
+<!-- Modal confirmar eliminación -->
+<app-confirm-dialog
+  [isVisible]="showDeleteConfirm"
+  [title]="'¿Eliminar ingreso?'"
+  [message]="'¿Estás seguro de que deseas eliminar el ingreso ' + ingreso.concepto + '? Esta acción no se puede deshacer.'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'Cancelar'"
+  [confirmButtonClass]="'btn-danger'"
+  (confirmed)="onConfirmarEliminar()"
+  (cancelled)="onCancelarModal()">
+</app-confirm-dialog>

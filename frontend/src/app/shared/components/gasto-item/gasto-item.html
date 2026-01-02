@@ -1,0 +1,93 @@
+<div class="gasto-item" [ngClass]="getEstadoClass()">
+  <div class="gasto-content">
+    <!-- Información principal -->
+    <div class="gasto-info">
+      <h4 class="gasto-concepto">{{ gasto.concepto }}</h4>
+      
+      <!-- Categorías -->
+      <div class="gasto-categorias" *ngIf="gasto.categorias && gasto.categorias.length > 0">
+        <span 
+          *ngFor="let categoria of gasto.categorias" 
+          class="categoria-badge"
+          [style.background-color]="categoria.color || '#ddd'">
+          {{ categoria.nombre }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Montos -->
+    <div class="gasto-montos">
+      <div class="monto-adeudado">
+        <span class="monto-label">Adeudado:</span>
+        <span class="monto-value">{{ formatCurrency(gasto.montoAdeudado) }}</span>
+      </div>
+      <div class="monto-pagado">
+        <span class="monto-label">Pagado:</span>
+        <span class="monto-value" [class.monto-pagado-completo]="isCompletamentePagado()">
+          {{ formatCurrency(gasto.montoPagado) }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="gasto-actions">
+      <span class="estado-badge" [ngClass]="'estado-badge-' + getEstado().toLowerCase()">
+        {{ getEstado() }}
+      </span>
+      <div class="action-buttons">
+        <button class="btn-icon" title="Confirmar monto" *ngIf="!gasto.estaConfirmado" (click)="onConfirmarClick()">
+          ✓
+        </button>
+        <button class="btn-icon" title="Registrar pago" (click)="onPagarClick()">
+          💵
+        </button>
+        <button class="btn-icon" title="Editar" (click)="onEditarClick()">
+          ✏️
+        </button>
+        <button class="btn-icon btn-danger" title="Eliminar" (click)="onEliminarClick()">
+          🗑️
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmar monto -->
+<app-monto-modal
+  [isVisible]="showConfirmMontoModal"
+  [title]="'Confirmar Monto del Gasto'"
+  [montoLabel]="'Monto Adeudado'"
+  [montoActual]="gasto.montoAdeudado"
+  [montoEsperado]="gasto.montoAdeudado"
+  [concepto]="gasto.concepto"
+  [confirmText]="'Confirmar Monto'"
+  [isConfirmMode]="true"
+  (confirmed)="onConfirmarMonto($event)"
+  (cancelled)="onCancelarModal()"
+></app-monto-modal>
+
+<!-- Modal registrar pago -->
+<app-monto-modal
+  [isVisible]="showPagoModal"
+  [title]="'Registrar Pago'"
+  [montoLabel]="'Monto Pagado'"
+  [montoActual]="gasto.montoPagado"
+  [montoEsperado]="gasto.montoAdeudado"
+  [concepto]="gasto.concepto"
+  [confirmText]="'Registrar Pago'"
+  [isConfirmMode]="false"
+  (confirmed)="onRegistrarPago($event)"
+  (cancelled)="onCancelarModal()"
+></app-monto-modal>
+
+<!-- Modal confirmar eliminación -->
+<app-confirm-dialog
+  [isVisible]="showDeleteConfirm"
+  [title]="'¿Eliminar gasto?'"
+  [message]="'¿Estás seguro de que deseas eliminar el gasto ' + gasto.concepto + '? Esta acción no se puede deshacer.'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'Cancelar'"
+  [confirmButtonClass]="'btn-danger'"
+  (confirmed)="onConfirmarEliminar()"
+  (cancelled)="onCancelarModal()">
+</app-confirm-dialog>

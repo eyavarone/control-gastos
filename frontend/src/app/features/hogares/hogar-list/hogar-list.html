@@ -1,0 +1,31 @@
+<div class="hogar-list-container">
+  <header class="header">
+    <h1>Mis Hogares</h1>
+    <button class="btn-primary">+ Nuevo Hogar</button>
+  </header>
+
+  <div *ngIf="loading" class="loading">
+    <p>Cargando...</p>
+  </div>
+
+  <div *ngIf="!loading" class="hogares-grid">
+    <div *ngFor="let hogar of hogares" class="hogar-card" [routerLink]="['/presupuestos', 'm1']">
+      <div class="hogar-card-header">
+        <h2>{{ hogar.nombre }}</h2>
+      </div>
+      <div class="hogar-card-body">
+        <p class="hogar-descripcion" *ngIf="hogar.descripcion">
+          {{ hogar.descripcion }}
+        </p>
+        <p class="hogar-fecha">
+          Última modificación: {{ hogar.fechaUltimaModificacion | date: 'dd/MM/yyyy' }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && hogares.length === 0" class="empty-state">
+    <p>No tienes hogares creados aún.</p>
+    <button class="btn-primary">Crear mi primer hogar</button>
+  </div>
+</div>

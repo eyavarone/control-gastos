@@ -1,0 +1,79 @@
+<div class="totalizadores" *ngIf="totalizadores">
+  <div class="totalizadores-grid">
+    <!-- Ingresos -->
+    <div class="totalizador-card ingreso-card">
+      <div class="totalizador-header">
+        <span class="totalizador-icon">💵</span>
+        <h3>Ingresos</h3>
+      </div>
+      <div class="totalizador-body">
+        <div class="totalizador-row">
+          <span class="label">Esperado:</span>
+          <span class="value value-esperado">{{ formatCurrency(totalizadores.ingresos.esperado) }}</span>
+        </div>
+        <div class="totalizador-row">
+          <span class="label">Recibido:</span>
+          <span class="value value-recibido">{{ formatCurrency(totalizadores.ingresos.recibido) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gastos Fijos -->
+    <div class="totalizador-card gasto-card">
+      <div class="totalizador-header">
+        <span class="totalizador-icon">📌</span>
+        <h3>Gastos Fijos</h3>
+      </div>
+      <div class="totalizador-body">
+        <div class="totalizador-row">
+          <span class="label">Adeudado:</span>
+          <span class="value value-adeudado">{{ formatCurrency(totalizadores.gastosFijos.adeudado) }}</span>
+        </div>
+        <div class="totalizador-row">
+          <span class="label">Pagado:</span>
+          <span class="value value-pagado">{{ formatCurrency(totalizadores.gastosFijos.pagado) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gastos Variables -->
+    <div class="totalizador-card gasto-card">
+      <div class="totalizador-header">
+        <span class="totalizador-icon">📊</span>
+        <h3>Gastos Variables</h3>
+      </div>
+      <div class="totalizador-body">
+        <div class="totalizador-row">
+          <span class="label">Adeudado:</span>
+          <span class="value value-adeudado">{{ formatCurrency(totalizadores.gastosVariables.adeudado) }}</span>
+        </div>
+        <div class="totalizador-row">
+          <span class="label">Pagado:</span>
+          <span class="value value-pagado">{{ formatCurrency(totalizadores.gastosVariables.pagado) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Balance -->
+    <div class="totalizador-card balance-card">
+      <div class="totalizador-header">
+        <span class="totalizador-icon">💰</span>
+        <h3>Balance</h3>
+      </div>
+      <div class="totalizador-body">
+        <div class="totalizador-row">
+          <span class="label">Esperado:</span>
+          <span class="value" [class.value-positive]="getBalanceEsperado() >= 0" [class.value-negative]="getBalanceEsperado() < 0">
+            {{ formatCurrency(getBalanceEsperado()) }}
+          </span>
+        </div>
+        <div class="totalizador-row">
+          <span class="label">Real:</span>
+          <span class="value" [class.value-positive]="getBalanceReal() >= 0" [class.value-negative]="getBalanceReal() < 0">
+            {{ formatCurrency(getBalanceReal()) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
