@@ -149,6 +149,30 @@
   gap: 0.75rem;
 }
 
+/* Search box */
+.search-box {
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4ECDC4;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
 /* Empty state */
 .empty-state {
   text-align: center;

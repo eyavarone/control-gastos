@@ -1,6 +1,9 @@
 import { TipoGastoIngreso } from './estado.model';
 import { Categoria } from './categoria.model';
 
+// Re-exportar TipoGastoIngreso para facilitar su uso
+export { TipoGastoIngreso };
+
 /**
  * Modelo de Gasto
  */
@@ -14,6 +17,8 @@ export interface Gasto {
   mesId: string;
   fechaCreacion: Date;
   fechaUltimaModificacion: Date;
+  fechaVencimiento?: string;
+  notas?: string;
 }
 
 /**

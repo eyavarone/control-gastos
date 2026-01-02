@@ -15,7 +15,7 @@
         <h1>{{ getNombreMes() }}</h1>
         <div class="mes-actions">
           <button class="btn-secondary">Editar Mes</button>
-          <button class="btn-primary">+ Nuevo Gasto</button>
+          <button class="btn-primary" (click)="onNuevoGasto()">+ Nuevo Gasto</button>
         </div>
       </div>
     </header>
@@ -31,7 +31,18 @@
       <section class="section">
         <div class="section-header">
           <h2>💵 Ingresos</h2>
-          <button class="btn-sm btn-primary">+ Agregar Ingreso</button>
+          <button class="btn-sm btn-primary" (click)="onNuevoIngreso()">+ Agregar Ingreso</button>
+        </div>
+
+        <!-- Buscador de ingresos -->
+        <div class="search-box">
+          <input 
+            type="text" 
+            class="search-input"
+            placeholder="🔍 Buscar por concepto o monto..."
+            [(ngModel)]="searchIngresos"
+            (ngModelChange)="onSearchIngresosChange()"
+          />
         </div>
 
         <!-- Ingresos Fijos -->
@@ -73,7 +84,18 @@
       <section class="section">
         <div class="section-header">
           <h2>💸 Gastos</h2>
-          <button class="btn-sm btn-primary">+ Agregar Gasto</button>
+          <button class="btn-sm btn-primary" (click)="onNuevoGasto()">+ Agregar Gasto</button>
+        </div>
+
+        <!-- Buscador de gastos -->
+        <div class="search-box">
+          <input 
+            type="text" 
+            class="search-input"
+            placeholder="🔍 Buscar por concepto, monto o categoría..."
+            [(ngModel)]="searchGastos"
+            (ngModelChange)="onSearchGastosChange()"
+          />
         </div>
 
         <!-- Gastos Fijos -->
@@ -118,4 +140,20 @@
     <p>No se pudo cargar el presupuesto del mes.</p>
     <button class="btn-primary" routerLink="/hogares">Volver a Hogares</button>
   </div>
+
+  <!-- Formularios -->
+  <app-gasto-form
+    *ngIf="showGastoForm"
+    [gasto]="gastoEnEdicion"
+    [categorias]="categorias"
+    (guardar)="onGuardarGasto($event)"
+    (cancelar)="onCancelarGastoForm()">
+  </app-gasto-form>
+
+  <app-ingreso-form
+    *ngIf="showIngresoForm"
+    [ingreso]="ingresoEnEdicion"
+    (guardar)="onGuardarIngreso($event)"
+    (cancelar)="onCancelarIngresoForm()">
+  </app-ingreso-form>
 </div>

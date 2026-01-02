@@ -1,0 +1,126 @@
+<div class="form-overlay" (click)="onCancelar()">
+  <div class="form-container" (click)="$event.stopPropagation()">
+    <div class="form-header">
+      <h2>{{ isEditMode ? 'Editar Gasto' : 'Nuevo Gasto' }}</h2>
+      <button mat-icon-button (click)="onCancelar()" aria-label="Cerrar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="gasto-form">
+      <!-- Concepto -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Concepto</mat-label>
+        <input 
+          matInput 
+          [(ngModel)]="concepto"
+          name="concepto"
+          placeholder="Ej: Supermercado, Luz, Agua..."
+          maxlength="100"
+          required
+        />
+        <mat-error *ngIf="errors['concepto']">{{ errors['concepto'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Tipo de Gasto -->
+      <div class="form-group">
+        <label class="mat-label">Tipo de Gasto</label>
+        <mat-radio-group [(ngModel)]="tipo" name="tipo" class="radio-group">
+          <mat-radio-button [value]="TipoGasto.Fijo">Fijo</mat-radio-button>
+          <mat-radio-button [value]="TipoGasto.Variable">Variable</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- Monto Esperado -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Monto Esperado</mat-label>
+        <span matTextPrefix>$ &nbsp;</span>
+        <input 
+          matInput 
+          type="number"
+          [(ngModel)]="montoEsperado"
+          name="montoEsperado"
+          placeholder="0.00"
+          min="0"
+          step="0.01"
+          required
+        />
+        <mat-error *ngIf="errors['montoEsperado']">{{ errors['montoEsperado'] }}</mat-error>
+        <mat-hint *ngIf="isEditMode && montoPagado > 0">Se ajustará automáticamente si el monto pagado es mayor</mat-hint>
+      </mat-form-field>
+
+      <!-- Monto Pagado (solo en modo edición) -->
+      <mat-form-field appearance="outline" class="full-width" *ngIf="isEditMode">
+        <mat-label>Monto Pagado</mat-label>
+        <span matTextPrefix>$ &nbsp;</span>
+        <input 
+          matInput 
+          type="number"
+          [(ngModel)]="montoPagado"
+          (ngModelChange)="onMontoPagadoChange()"
+          name="montoPagado"
+          placeholder="0.00"
+          min="0"
+          step="0.01"
+        />
+        <mat-error *ngIf="errors['montoPagado']">{{ errors['montoPagado'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Categorías - SELECTOR MÚLTIPLE SIMPLE -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Categorías</mat-label>
+        <mat-select 
+          [(ngModel)]="categoriasSeleccionadas" 
+          name="categorias"
+          (selectionChange)="onCategoriasChange()"
+          multiple 
+          required
+        >
+          <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
+            <span class="categoria-option">
+              <span class="categoria-color-indicator" [style.background-color]="categoria.color"></span>
+              {{ categoria.nombre }}
+            </span>
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="errors['categorias']">{{ errors['categorias'] }}</mat-error>
+        <mat-hint>Selecciona una o más categorías</mat-hint>
+      </mat-form-field>
+
+      <!-- Fecha de Vencimiento -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha de Vencimiento (opcional)</mat-label>
+        <input 
+          matInput 
+          type="date"
+          [(ngModel)]="fechaVencimiento"
+          name="fechaVencimiento"
+        />
+      </mat-form-field>
+
+      <!-- Notas -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Notas (opcional)</mat-label>
+        <textarea 
+          matInput 
+          [(ngModel)]="notas"
+          name="notas"
+          placeholder="Agrega notas adicionales..."
+          rows="3"
+          maxlength="500"
+        ></textarea>
+        <mat-hint align="end">{{ notas.length }}/500</mat-hint>
+      </mat-form-field>
+
+      <!-- Botones de acción -->
+      <div class="form-actions">
+        <button mat-stroked-button type="button" (click)="onCancelar()">
+          Cancelar
+        </button>
+        <button mat-raised-button color="primary" type="submit">
+          {{ isEditMode ? 'Guardar Cambios' : 'Crear Gasto' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

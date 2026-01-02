@@ -41,7 +41,9 @@ export class MockDataService {
     { id: '3', nombre: 'Transporte', color: '#45B7D1', hogarId: '1' },
     { id: '4', nombre: 'Salud', color: '#FFA07A', hogarId: '1' },
     { id: '5', nombre: 'Educación', color: '#98D8C8', hogarId: '1' },
-    { id: '6', nombre: 'Entretenimiento', color: '#F7DC6F', hogarId: '1' }
+    { id: '6', nombre: 'Entretenimiento', color: '#F7DC6F', hogarId: '1' },
+    { id: '7', nombre: 'Hogar', color: '#BB8FCE', hogarId: '1' },
+    { id: '8', nombre: 'Tecnología', color: '#85C1E2', hogarId: '1' }
   ];
 
   private gastos: GastoCompleto[] = [
@@ -55,7 +57,7 @@ export class MockDataService {
       mesId: 'm1',
       fechaCreacion: new Date('2024-12-01'),
       fechaUltimaModificacion: new Date('2024-12-05'),
-      categorias: [this.categorias[1]]
+      categorias: [this.categorias[1], this.categorias[6]] // Servicios + Hogar
     },
     {
       id: 'g2',
@@ -79,7 +81,7 @@ export class MockDataService {
       mesId: 'm1',
       fechaCreacion: new Date('2024-12-01'),
       fechaUltimaModificacion: new Date('2024-12-15'),
-      categorias: [this.categorias[0]]
+      categorias: [this.categorias[0], this.categorias[3], this.categorias[4], this.categorias[5], this.categorias[6]] // 5 categorías
     },
     {
       id: 'g4',
@@ -91,7 +93,19 @@ export class MockDataService {
       mesId: 'm1',
       fechaCreacion: new Date('2024-12-01'),
       fechaUltimaModificacion: new Date('2024-12-01'),
-      categorias: [this.categorias[1]]
+      categorias: [this.categorias[1], this.categorias[7]] // Servicios + Tecnología
+    },
+    {
+      id: 'g5',
+      concepto: 'Combustible',
+      montoAdeudado: 12000,
+      montoPagado: 6000,
+      estaConfirmado: true,
+      tipo: TipoGastoIngreso.Variable,
+      mesId: 'm1',
+      fechaCreacion: new Date('2024-12-01'),
+      fechaUltimaModificacion: new Date('2024-12-12'),
+      categorias: [this.categorias[2]] // Transporte
     }
   ];
 

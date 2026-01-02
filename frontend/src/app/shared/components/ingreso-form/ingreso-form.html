@@ -1,0 +1,105 @@
+<div class="form-overlay" (click)="onCancelar()">
+  <div class="form-container" (click)="$event.stopPropagation()">
+    <div class="form-header">
+      <h2>{{ isEditMode ? 'Editar Ingreso' : 'Nuevo Ingreso' }}</h2>
+      <button mat-icon-button (click)="onCancelar()" aria-label="Cerrar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="ingreso-form">
+      <!-- Concepto -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Concepto</mat-label>
+        <input 
+          matInput 
+          [(ngModel)]="concepto"
+          name="concepto"
+          placeholder="Ej: Sueldo, Freelance, Bono..."
+          maxlength="100"
+          required
+        />
+        <mat-error *ngIf="errors['concepto']">{{ errors['concepto'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Tipo de Ingreso -->
+      <div class="form-group">
+        <label class="mat-label">Tipo de Ingreso</label>
+        <mat-radio-group [(ngModel)]="tipo" name="tipo" class="radio-group">
+          <mat-radio-button [value]="TipoIngreso.Fijo">Fijo</mat-radio-button>
+          <mat-radio-button [value]="TipoIngreso.Variable">Variable</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- Monto Esperado -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Monto Esperado</mat-label>
+        <span matTextPrefix>$ &nbsp;</span>
+        <input 
+          matInput 
+          type="number"
+          [(ngModel)]="montoEsperado"
+          name="montoEsperado"
+          placeholder="0.00"
+          min="0"
+          step="0.01"
+          required
+        />
+        <mat-error *ngIf="errors['montoEsperado']">{{ errors['montoEsperado'] }}</mat-error>
+        <mat-hint *ngIf="isEditMode && montoRecibido > 0">Se ajustará automáticamente si el monto recibido es mayor</mat-hint>
+      </mat-form-field>
+
+      <!-- Monto Recibido (solo en modo edición) -->
+      <mat-form-field appearance="outline" class="full-width" *ngIf="isEditMode">
+        <mat-label>Monto Recibido</mat-label>
+        <span matTextPrefix>$ &nbsp;</span>
+        <input 
+          matInput 
+          type="number"
+          [(ngModel)]="montoRecibido"
+          (ngModelChange)="onMontoRecibidoChange()"
+          name="montoRecibido"
+          placeholder="0.00"
+          min="0"
+          step="0.01"
+        />
+        <mat-error *ngIf="errors['montoRecibido']">{{ errors['montoRecibido'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Fecha Esperada -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha Esperada (opcional)</mat-label>
+        <input 
+          matInput 
+          type="date"
+          [(ngModel)]="fechaEsperada"
+          name="fechaEsperada"
+        />
+      </mat-form-field>
+
+      <!-- Notas -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Notas (opcional)</mat-label>
+        <textarea 
+          matInput 
+          [(ngModel)]="notas"
+          name="notas"
+          placeholder="Agrega notas adicionales..."
+          rows="3"
+          maxlength="500"
+        ></textarea>
+        <mat-hint align="end">{{ notas.length }}/500</mat-hint>
+      </mat-form-field>
+
+      <!-- Botones de acción -->
+      <div class="form-actions">
+        <button mat-stroked-button type="button" (click)="onCancelar()">
+          Cancelar
+        </button>
+        <button mat-raised-button color="accent" type="submit">
+          {{ isEditMode ? 'Guardar Cambios' : 'Crear Ingreso' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
